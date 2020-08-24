@@ -187,19 +187,19 @@ install_sap_jdk_jre = <<EOL
   }
 EOL
 
-context 'installing java jre', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
+context 'installing java jre', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]), :integration => true do
   it 'installs jre' do
     idempotent_apply(java_class_jre)
   end
 end
 
-context 'installing java jdk', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
+context 'installing java jdk', unless: UNSUPPORTED_PLATFORMS.include?(os[:family]), :integration => true do
   it 'installs jdk' do
     idempotent_apply(java_class)
   end
 end
 
-context 'with failure cases' do
+context 'with failure cases', :integration do
   it 'fails to install java with a blank version' do
     apply_manifest(blank_version, expect_failures: true)
   end
@@ -255,7 +255,7 @@ context 'java::oracle', if: oracle_enabled, unless: UNSUPPORTED_PLATFORMS.includ
   end
 end
 
-context 'java::adopt', if: adopt_enabled, unless: UNSUPPORTED_PLATFORMS.include?(os[:family]) do
+context 'java::adopt', if: adopt_enabled, unless: UNSUPPORTED_PLATFORMS.include?(os[:family]), :integration => true do
   let(:install_path) do
     (os[:family] == 'redhat') ? '/usr/java' : '/usr/lib/jvm'
   end
